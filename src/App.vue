@@ -1,6 +1,13 @@
 <template>
   <div id="app">
     <test></test>
+
+    <ul>
+      <li v-for = "p in persons">{{p.name}} (ID: {{ p.id }})</li>
+    </ul>
+
+    <button v-on:click = "AddNewPerson()">Add Person</button>
+
   </div>
 </template>
 
@@ -11,6 +18,28 @@ export default {
   name: 'app',
   components:{
     Test
+  },
+  data(){
+    return {
+      persons:[
+        { id: 1, name: 'Andy'},
+        { id: 2, name: 'Brandon'},
+        { id: 3, name: 'Mary'}
+      ]
+    }
+  },
+  methods:{
+    AddNewPerson: function(){
+      var highestId = Math.max.apply(Math, this.persons.map(function(p){
+        return p.id;
+      }));
+      var names = ['Billy','Michael','Steve','Diane','Peter'];
+
+      this.persons.push({
+        id: highestId + 1,
+        name: names[Math.floor(Math.random() * name.length)]
+      });
+    },
   }
 }
 </script>
