@@ -37,7 +37,6 @@
     <table border="1">
     <thead>
       <tr>
-        <th>Index</th>
         <th>Name</th>
         <th>Title</th>
         <th>Company</th>
@@ -45,13 +44,23 @@
     </thead>
     <tbody>
       <tr v-for ="employee in employees">
-        <td>{{index}}</td>
         <td>{{employee.name}}</td>
         <td>{{employee.title}}</td>
         <td>{{company}}</td>
       </tr>
     </tbody>
     </table>
+
+    <div v-bind:style="{'margin':'100px 100px','transform':'rotate(3deg)','box-shadow':'0 20px 30px rgba(0,0,0,1)','background-color':'red'}"> CSS Style Testing
+    </div>
+
+    <div class = "static" v-bind:class="{ 'class-a':isA, 'class-b':isB}">This is CSS Test
+      <div align = "center">
+        <button @click = "isA = !isA">isA = {{isA}}</button>
+        <button @click = "isB = !isB">isB = {{isB}}</button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -68,6 +77,9 @@
         itemsInStock: 0,
         company: 'VueX Ltd.',
         showName: true,
+        isA: true,
+        isB: true,
+
         user: {
           counter: 1,
           firstName: 'John',
@@ -85,6 +97,8 @@
           { mName: 'The Matrix Reloaded', year: 2000 },
           { mName: 'The Matrix Revoultions', year: 2003 }
         ],
+
+
       }
     },
     methods: {
@@ -152,5 +166,24 @@
 </script>
 
 <style scoped>
+
+  .static {
+    font-size: 20px;
+    width: 600px;
+    margin: 0 auto;
+    background-color: yellow;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+  }
+
+  .class-a {
+    color: #FF0000;
+  }
+
+  .class-b {
+    color: green;
+    text-decoration: underline;
+  }
 
 </style>
