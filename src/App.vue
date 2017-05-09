@@ -2,11 +2,6 @@
   <div id="app">
     <test></test>
 
-    <ul>
-      <li v-for = "p in persons">{{p.name}} (ID: {{ p.id }})</li>
-    </ul>
-
-    <button v-on:click = "AddNewPerson()">Add Person</button>
 
   </div>
 </template>
