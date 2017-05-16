@@ -3,7 +3,7 @@
     <a v-bind:href="blogUrl">Vist my blog</a>
     </br>
     <a href="http://google.com" v-on:click ="showDialog" target ="_blank">click here!</a>
-
+<!--
     <p>{{ message | uppercase(false)}}</p>
     <p>{{ message | uppercase(true) | removeSpaces}}</p>
 
@@ -77,7 +77,7 @@
     <button v-on:click="f2">f2 concat arr</button>
     <button v-on:click="f3">f3 splice(2,3)</button>
     <button v-on:click="f4">f4 other functions</button>
-<!--
+
     <button v-on:click="f5(item)">this.items.splice(index, 1)</button>
     <button v-on:click="f6(item)">f6 remove items</button>
 
@@ -92,7 +92,81 @@
         </div>
         </br>
 
+    <div>
+      <ul>
+        <template v-for = "item in filter1">
+          <li>{{item}}</li>
+        </template>
+      </ul>
+    </div>
+
+    <div>
+      <input v-model = "msg">
+      <ul>
+        <li v-for = "item in items | filterBy msg 'msg' | orderBy 'msg'">{{item.msg}}</li>
+        <li v-for = "item in items | filterBy msg 'msg' | orderBy 'msg' -1">{{item.msg}}</li>
+
+        <li v-for = "item in items ">{{item.msg}}</li>
+      </ul>
+    </div>
+
+    <div>
+      <input type = "checkbox" id = "checkbox" v-model = "checked">
+      <label for = "checkbox">{{checked}}</label>
+    </div>
+
+    <div>
+      <input type = "checkbox" id = "jack" value = "Jack" v-model = "checkedNames">
+      <label for = "jack">Jack</label>
+      <input type = "checkbox" id = "john" value = "John" v-model = "checkedNames">
+      <label for = "john">John</label>
+      <input type = "checkbox" id = "mike" value = "Mike" v-model = "checkedNames">
+      <label for = "mike">Mike</label>
+      <br>
+      <span>Checked Names: {{checkedNames | json}}</span>
+    </div>
+
+    <div>
+      <input type = "radio" id = "one" value = "One" v-model = "picked">
+      <label for = "one">One</label>
+      <input type = "radio" id = "two" value = "Two" v-model = "picked">
+      <label for = "two">Two</label>
+      <br>
+      <span>Picked: {{picked}}</span>
+    </div>
+
+    <div>
+      <select v-model = "selected">
+        <option value="A">Apple</option>
+        <option value="B">Bule</option>
+        <option value="C">Chunk</option>
+      </select>
+      <br>
+      <span>Selected: {{selected}}</span>
+    </div>
+
+    <div>
+      <select v-model = "selected">
+        <option v-for="option in options" v-bind:value="option.value">{{option.tex}}</option>
+      </select>
+      <br>
+      <span>Selected: {{selected}}</span>
+    </div>
+
+    <div>
+      <input type ="checkbox" v-model = "toggle" v-bind:true-value="a" v-bind:false-value="b">
+      <br>
+      <pre>{{toggle}}</pre>
+    </div>
 -->
+    <div>
+      <input v-model = "msg" lazy>{{msg}}
+      <br>
+      <input v-model ="msg1"> {{msg1}}
+    </div>
+
+
+
 
   </div>
 </template>
@@ -112,6 +186,18 @@
         showName: true,
         isA: true,
         isB: true,
+        msg: '',
+        msg1: '',
+        checked: true,
+        checkedNames: [],
+        picked: 'Two',
+        selected: 'C',
+        toggle: 'unchecked b',
+        a: 'checked a',
+        b: 'unchecked b',
+
+
+
 
         user: {
           counter: 1,
@@ -120,16 +206,19 @@
           fullName: 'John Smith',
           age: 27
         },
+
         employees:[
           {name: 'Abby', title: 'accountant'},
           {name: 'Brandon', title: 'manager'},
           {name: 'Mary', title: 'IT'}
         ],
+
         movies: [
           { mName: 'The Matrix', year: 1999 },
           { mName: 'The Matrix Reloaded', year: 2000 },
           { mName: 'The Matrix Revoultions', year: 2003 }
         ],
+
         items: [
           { msg: 'Foo'},
           { msg: 'Bar'},
@@ -139,14 +228,22 @@
           { msg: 'James'},
           { msg: 'Martin'}
         ],
+
         arr: [
           { msg: 'array 1'},
           { msg: 'array 2'},
           { msg: 'array 1'}
         ],
+
         uids: [
           { _uid: '88f869d'},
           { _uid: '7496c10'}
+        ],
+
+        options: [
+          { tex: 'One', value: 'A'},
+          { tex: 'Two', value: 'B'},
+          { tex: 'Three', value: 'C'},
         ],
 
       }
@@ -224,7 +321,23 @@
           return movie.mName + ' (' + movie.year +')';
         });
       },
+      filter1: function() {
+        self = this;
+        var arr=[];
+        for (var i = 0, l = self.items.length; i < l; i++) {
+          //console.log(self.item[i].msg);
+          var str_len = self.items[i].msg.length;
+          //console.log(str_len);
+          if(str_len >= 4){
+            arr.push(self.items[i].msg);
+          }
+        }
+        //console.log('arr:' + arr);
+        return arr;
+      },
+
     },
+
     watch: {
       movies: function (movies){
         var newMovie = movies[movies.length -1];
@@ -267,7 +380,7 @@
     background-color: yellow;
     height: 40px;
     line-height: 40px;
-    text-align: center;
+    text-align: left;
   }
 
   .class-a {
