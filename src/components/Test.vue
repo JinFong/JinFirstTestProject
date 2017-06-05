@@ -3,7 +3,10 @@
     <a v-bind:href="blogUrl">Vist my blog</a>
     </br>
     <a href="http://google.com" v-on:click ="showDialog" target ="_blank">click here!</a>
+
 <!--
+    <link rel = "stylesheet" href = "animate.css">
+
     <p>{{ message | uppercase(false)}}</p>
     <p>{{ message | uppercase(true) | removeSpaces}}</p>
 
@@ -158,26 +161,54 @@
       <br>
       <pre>{{toggle}}</pre>
     </div>
--->
+
     <div>
-      <input v-model = "msg" lazy>{{msg}}
+      <input v-model = "msg" lazy> {{msg}}
       <br>
       <input v-model ="msg1"> {{msg1}}
     </div>
 
+    <div>
+      <input v-model = "query">
+        <ul>
+          <li v-for ="item in items" transition="staggered" stagger="100">{{item.msg}}
+          </li>
+        </ul>
+    </div>
+-->
 
+    <div>
+      <h1>You are a <strong>{{level}}</strong></h1>
+      <p> current count: {{count}}</p>
+      <button v-on:click="countUp" class="btn btn-primary">Count Up</button>
+      <button @click="countDown" class="btn btn-primary">Count Down</button>
+
+      <br>
+
+      <p>
+        Visit: <a :href="url">{{cleanUrl}}</a>
+      </p>
+       <input type = "text" class ="form-control" v-model = "url"/>
+      <button @click="humanizeUrl" class="btn btn-primary">Humanize Me!</button>
+
+    </div>
 
 
   </div>
 </template>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
+
   export default {
     name: 'test',
     data() {
       return {
         blogUrl: 'http://codingexplained.com',
         message: 'hello world!',
+        title: 'You load the page on',
         movieTitle: 'The matrix',
         movieTitles: ['The matrix', 'The matrix reload','The matrix revolutions'],
         releaseYear: 1999,
@@ -195,7 +226,10 @@
         toggle: 'unchecked b',
         a: 'checked a',
         b: 'unchecked b',
-
+        query: '',
+        count: 10,
+        url: "",
+        cleanUrl:"",
 
 
 
@@ -310,17 +344,33 @@
         this.items.$remove(item);
       },
 
+      countUp: function() {
+        this.count += 10;
+      },
+
+      countDown: function() {
+        this.count -= 10;
+      },
+
+      humanizeUrl: function() {
+        this.cleanUrl = this.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      },
+
+
     },
 
     computed: {
+
       getFullName: function() {
         return this.user.firstName + ' '+ this.user.lastName;
       },
+
       formattedMovies: function() {
         return this.movies.map ( function(movie){
           return movie.mName + ' (' + movie.year +')';
         });
       },
+
       filter1: function() {
         self = this;
         var arr=[];
@@ -335,6 +385,19 @@
         //console.log('arr:' + arr);
         return arr;
       },
+
+      level: function() {
+        if (this.count >= 200) {
+          return "Pro";
+        } else if (this.count >= 100) {
+          return "Intermediate";
+        } else if (this.count >= 0) {
+          return "Beginner";
+        } else {
+          return "Banned";
+        }
+      },
+
 
     },
 
@@ -391,5 +454,46 @@
     color: green;
     text-decoration: underline;
   }
+
+  .staggered-transition {
+    transition: all .5s ease;
+    overflow: hidden;
+    margin: 0;
+    height: 20px;
+  }
+  .staggered-enter{
+
+  }
+  .staggered-leave {
+    opacity: 0;
+    height: 0;
+  }
+
+
+
+
+
+
+
+
+/* css3 Animation demo
+  div {
+    width: 100px;
+    height: 100px;
+    background: blue;
+    transition: width 2s;
+    -moz-transition: width 2s;
+    -webkit-transition: width 2s;
+    -o-transition: width 2s;
+
+  }
+
+  div:hover {
+    width: 300px;
+  }
+
+<li v-for ="item in items" transition="staggered" stagger="100">{{item.msg}}
+</li>
+*/
 
 </style>
